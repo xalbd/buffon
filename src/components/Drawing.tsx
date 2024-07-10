@@ -1,7 +1,8 @@
-import { ResponsiveLineCanvas } from "@nivo/line";
+import { ResponsiveLine } from "@nivo/line";
 
 type PointData = Array<{
   id: number;
+  color: string;
   data: Array<{
     x: number;
     y: number;
@@ -24,15 +25,20 @@ function Drawing({ data, lines }: DrawingProps) {
   }
 
   return (
-    <div className="bg-white">
-      <ResponsiveLineCanvas
+    <div className="rounded-md aspect-square min-w-0 min-h-0 basis-1/3">
+      <ResponsiveLine
         data={data}
+        theme={{
+          background: "white",
+          grid: { line: { stroke: "#333333", strokeWidth: 1 } },
+        }}
         xScale={{ type: "linear", min: 0, max: 1000 }}
         yScale={{ type: "linear", min: 0, max: 1000 }}
         gridXValues={generateGrid()}
         enableGridY={false}
-        colors={{ scheme: "spectral" }}
+        colors={(d) => d.color}
         lineWidth={1}
+        animate={false}
         enablePoints={false}
         isInteractive={false}
       />
