@@ -1,6 +1,10 @@
 import React from "react";
 import Graph, { GraphData } from "./components/Graph";
 import Drawing, { PointData } from "./components/Drawing";
+import Results from "./components/Results";
+import Drop from "./components/Drop";
+import Reset from "./components/Reset";
+import Truncate from "./components/Truncate";
 
 function App() {
   const [data, setData] = React.useState<PointData>([]);
@@ -8,8 +12,6 @@ function App() {
   const [landed, setLanded] = React.useState<number>(0);
   const [needles, setNeedles] = React.useState<number>(0);
   const [lines, setLines] = React.useState<number>(10);
-  const [changeLines, setChangeLines] = React.useState<number>(10);
-  const [toDrop, setToDrop] = React.useState<number>(50);
   const [truncate, setTruncate] = React.useState<number>(1000);
   const [isTruncated, setIsTruncated] = React.useState<boolean>(true);
 
@@ -85,94 +87,18 @@ function App() {
         <Drawing data={data} lines={lines} />
         <Graph data={calculatedPi} />
       </div>
-      <div className="flex flex-col space-y-4 py-4">
-        <div className="space-x-2">
-          <button
-            className="btn btn-primary"
-            onClick={() => generateNeedles(1)}
-          >
-            Drop 1
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={() => generateNeedles(10)}
-          >
-            Drop 10
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={() => generateNeedles(100)}
-          >
-            Drop 100
-          </button>
-        </div>
-        <div className="space-x-2 flex items-center">
-          <button
-            className="btn btn-primary"
-            onClick={() => generateNeedles(toDrop)}
-          >
-            Drop Custom
-          </button>
-          <input
-            type="number"
-            placeholder="Drop custom amount..."
-            className="input input-bordered"
-            value={toDrop}
-            min={1}
-            onChange={(e) => setToDrop(parseInt(e.target.value, 10))}
+      <div className="flex flex-row space-x-4">
+        <div className="flex flex-col space-y-4 py-4">
+          <Drop generateNeedles={generateNeedles} />
+          <Truncate
+            truncate={truncate}
+            setTruncate={setTruncate}
+            isTruncated={isTruncated}
+            setIsTruncated={setIsTruncated}
           />
         </div>
-        <div className="space-x-2 flex items-center">
-          <input
-            type="checkbox"
-            className="toggle toggle-accent"
-            checked={isTruncated}
-            onChange={(e) => setIsTruncated(e.target.checked)}
-            id="truncate"
-          />
-          <label htmlFor="truncate" className="ml-2">
-            Truncate Output
-          </label>
-          <input
-            type="number"
-            placeholder="Truncate to last..."
-            className="input input-bordered ml-2"
-            value={truncate}
-            disabled={!isTruncated}
-            min={1000}
-            onChange={(e) => setTruncate(parseInt(e.target.value, 10))}
-          />
-        </div>
-        <div className="space-x-2 flex items-center">
-          <button
-            className="btn btn-secondary"
-            onClick={() => {
-              setLines(changeLines);
-              reset();
-            }}
-          >
-            Change Line Count & Reset
-          </button>
-          <input
-            type="number"
-            placeholder="Change line count..."
-            className="input input-bordered"
-            value={changeLines}
-            min={1}
-            onChange={(e) => {
-              setChangeLines(parseInt(e.target.value, 10));
-            }}
-          />
-        </div>
-        <div>
-          <button className="btn btn-secondary" onClick={reset}>
-            Reset
-          </button>
-        </div>
-        <p className="mt-4 text-lg">
-          {needles} needles have been dropped. <br />π is estimated to be{" "}
-          {2 / (landed / needles)}
-        </p>
+        <Reset reset={reset} setLines={setLines} />
+        <Results needles={needles} landed={landed} />
       </div>
     </div>
   );
