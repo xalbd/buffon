@@ -85,8 +85,8 @@ function App() {
         <Drawing data={data} lines={lines} />
         <Graph data={calculatedPi} />
       </div>
-      <div className="flex flex-col">
-        <div>
+      <div className="flex flex-col space-y-4 py-4">
+        <div className="space-x-2">
           <button
             className="btn btn-primary"
             onClick={() => generateNeedles(1)}
@@ -106,7 +106,7 @@ function App() {
             Drop 100
           </button>
         </div>
-        <div>
+        <div className="space-x-2 flex items-center">
           <button
             className="btn btn-primary"
             onClick={() => generateNeedles(toDrop)}
@@ -122,8 +122,7 @@ function App() {
             onChange={(e) => setToDrop(parseInt(e.target.value, 10))}
           />
         </div>
-
-        <div>
+        <div className="space-x-2 flex items-center">
           <input
             type="checkbox"
             className="toggle toggle-accent"
@@ -131,19 +130,20 @@ function App() {
             onChange={(e) => setIsTruncated(e.target.checked)}
             id="truncate"
           />
-          {isTruncated && (
-            <input
-              type="number"
-              placeholder="Truncate to last..."
-              className="input input-bordered"
-              value={truncate}
-              min={1000}
-              onChange={(e) => setTruncate(parseInt(e.target.value, 10))}
-            />
-          )}
-          <label htmlFor="truncate">Truncate Output</label>
+          <label htmlFor="truncate" className="ml-2">
+            Truncate Output
+          </label>
+          <input
+            type="number"
+            placeholder="Truncate to last..."
+            className="input input-bordered ml-2"
+            value={truncate}
+            disabled={!isTruncated}
+            min={1000}
+            onChange={(e) => setTruncate(parseInt(e.target.value, 10))}
+          />
         </div>
-        <div>
+        <div className="space-x-2 flex items-center">
           <button
             className="btn btn-secondary"
             onClick={() => {
@@ -169,11 +169,11 @@ function App() {
             Reset
           </button>
         </div>
+        <p className="mt-4 text-lg">
+          {needles} needles have been dropped. <br />π is estimated to be{" "}
+          {2 / (landed / needles)}
+        </p>
       </div>
-      <p>
-        {needles} needles have been dropped. <br />π is estimated to be{" "}
-        {2 / (landed / needles)}
-      </p>
     </div>
   );
 }
